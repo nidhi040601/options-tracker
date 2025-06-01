@@ -1,3 +1,5 @@
+
+import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { signUpSchema } from "../validation/signUpSchema";
@@ -17,9 +19,6 @@ const SignUpForm = () => {
 
   const onSubmitHandler = (userData: SignUpFormData) => {
     console.log("User data", userData);
-
-    //TODO: Call register API from authService
-
     alert("Registered successfully!");
   };
 
@@ -59,6 +58,7 @@ const SignUpForm = () => {
             <p style={{ color: "red" }}>{errors.email.message}</p>
           )}
         </div>
+
         <div>
           <label>Password</label>
           <input
@@ -84,10 +84,16 @@ const SignUpForm = () => {
             <p style={{ color: "red" }}>{errors.confirmPassword.message}</p>
           )}
         </div>
+
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Registering..." : "Register"}
         </button>
       </form>
+
+      {/* Production navigation */}
+      <p style={{ marginTop: "1rem" }}>
+        Already have an account? <Link to="/login">Login</Link>
+      </p>
     </div>
   );
 };
