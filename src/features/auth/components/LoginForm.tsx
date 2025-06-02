@@ -1,8 +1,8 @@
-// src/features/auth/components/SignUpForm.tsx
+// src/features/auth/components/LoginForm.tsx
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from "../validation/signUpSchema";
+import { loginSchema } from "../validation/loginSchema";
 import { z } from "zod";
 import {
   Box,
@@ -16,18 +16,18 @@ import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import SocialButton from "./SocialButton";
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
+type LoginFormData = z.infer<typeof loginSchema>;
 
-const SignUpForm = () => {
+const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormData>({ resolver: zodResolver(signUpSchema) });
+  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
 
-  const onSubmitHandler = (data: SignUpFormData) => {
-    console.log("Sign up data:", data);
-    alert("Sign up successful!");
+  const onSubmitHandler = (data: LoginFormData) => {
+    console.log("Login data:", data);
+    alert("Login attempt submitted!");
   };
 
   return (
@@ -36,12 +36,12 @@ const SignUpForm = () => {
         <SocialButton
           icon={<FcGoogle size={24} />}
           text="Continue with Google"
-          onClick={() => console.log("Google sign up")}
+          onClick={() => console.log("Google login")}
         />
         <SocialButton
           icon={<FaApple size={24} />}
           text="Continue with Apple"
-          onClick={() => console.log("Apple sign up")}
+          onClick={() => console.log("Apple login")}
         />
       </Stack>
 
@@ -68,16 +68,6 @@ const SignUpForm = () => {
           helperText={errors.password?.message}
         />
 
-        <TextField
-          label="Confirm Password"
-          type="password"
-          fullWidth
-          margin="normal"
-          {...register("confirmPassword")}
-          error={!!errors.confirmPassword}
-          helperText={errors.confirmPassword?.message}
-        />
-
         <Button
           type="submit"
           variant="contained"
@@ -86,18 +76,18 @@ const SignUpForm = () => {
           disabled={isSubmitting}
           sx={{ mt: 2 }}
         >
-          {isSubmitting ? "Signing up..." : "Sign up"}
+          {isSubmitting ? "Logging in..." : "Log In"}
         </Button>
       </form>
 
       <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-        Already have an account?{" "}
-        <Link to="/login" style={{ color: "#E57373", textDecoration: "none" }}>
-          Login now
+        Don’t have an account?{" "}
+        <Link to="/signup" style={{ color: "#E57373", textDecoration: "none" }}>
+          Sign up now
         </Link>
       </Typography>
     </Box>
   );
 };
 
-export default SignUpForm;
+export default LoginForm;
