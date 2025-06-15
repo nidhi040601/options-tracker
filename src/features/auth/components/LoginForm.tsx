@@ -1,3 +1,4 @@
+// src/features/auth/components/LoginForm.tsx
 import {
   Box,
   Button,
@@ -9,34 +10,34 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from "../validation/signUpSchema";
+import { loginSchema } from "../validation/loginSchema";
 import { z } from "zod";
 import SocialButton from "./SocialButton";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
+type LoginFormData = z.infer<typeof loginSchema>;
 
-const SignUpForm = () => {
+const LoginForm = () => {
   const theme = useTheme();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: SignUpFormData) => {
+  const onSubmit = (data: LoginFormData) => {
     console.log(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h1" align="center" gutterBottom>
-        Join the Club!
+        Welcome Back!
       </Typography>
       <Typography
         variant="subtitle1"
@@ -44,7 +45,7 @@ const SignUpForm = () => {
         color="text.secondary"
         gutterBottom
       >
-        Create your account in a flash
+        Login to your account
       </Typography>
 
       <Stack spacing={1.5} mt={2}>
@@ -86,18 +87,6 @@ const SignUpForm = () => {
           helperText={errors.password?.message}
         />
 
-        <Typography variant="body2" fontWeight={500}>
-          CONFIRM PASSWORD
-        </Typography>
-        <TextField
-          fullWidth
-          placeholder="Confirm Password"
-          type="password"
-          {...register("confirmPassword")}
-          error={!!errors.confirmPassword}
-          helperText={errors.confirmPassword?.message}
-        />
-
         <Button
           type="submit"
           fullWidth
@@ -106,19 +95,19 @@ const SignUpForm = () => {
           disabled={isSubmitting}
           sx={{ mt: 2 }}
         >
-          Sign Up
+          Log In
         </Button>
 
         <Typography align="center" mt={2}>
-          Already have an account?{" "}
+          Don’t have an account?{" "}
           <Link
-            to="/login"
+            to="/signup"
             style={{
               color: theme.palette.primary.main,
               textDecoration: "none",
             }}
           >
-            Login now
+            Signup now
           </Link>
         </Typography>
       </Stack>
@@ -126,4 +115,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default LoginForm;

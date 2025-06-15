@@ -12,6 +12,7 @@ const theme = createTheme({
     primary: {
       main: "#E77B75",
       contrastText: "#FFFFFF",
+      light: "#FFD6DC",
     },
     // TODO : We can add more if we have secondary color, error , warning in design moving ahead
     background: {
@@ -59,6 +60,20 @@ const theme = createTheme({
   shape: {
     borderRadius: 8,
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+        outlined: {
+          border: "none", 
+        },
+      },
+    },
+  },
+  
+  
 });
 
 export default theme;
