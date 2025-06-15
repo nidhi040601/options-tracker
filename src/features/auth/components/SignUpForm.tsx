@@ -1,9 +1,3 @@
-// src/features/auth/components/SignUpForm.tsx
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from "../validation/signUpSchema";
-import { z } from "zod";
 import {
   Box,
   Button,
@@ -12,67 +6,93 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUpSchema } from "../validation/signUpSchema";
+import { z } from "zod";
+import SocialButton from "./SocialButton";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import SocialButton from "./SocialButton";
+import { Link } from "react-router-dom";
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const SignUpForm = () => {
+  const theme = useTheme();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormData>({ resolver: zodResolver(signUpSchema) });
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+  });
 
-  const onSubmitHandler = (data: SignUpFormData) => {
-    console.log("Sign up data:", data);
-    alert("Sign up successful!");
+  const onSubmit = (data: SignUpFormData) => {
+    console.log(data);
   };
 
   return (
-    <Box>
-      <Stack spacing={2} sx={{ my: 2 }}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h1" align="center" gutterBottom>
+        Join the Club!
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        align="center"
+        color="text.secondary"
+        gutterBottom
+      >
+        Create your account in a flash
+      </Typography>
+
+      <Stack spacing={1.5} mt={2}>
         <SocialButton
-          icon={<FcGoogle size={24} />}
+          icon={<FcGoogle />}
           text="Continue with Google"
-          onClick={() => console.log("Google sign up")}
+          background={theme.palette.background.paper}
+          color={theme.palette.text.primary}
         />
         <SocialButton
-          icon={<FaApple size={24} />}
+          icon={<FaApple />}
           text="Continue with Apple"
-          onClick={() => console.log("Apple sign up")}
+          background={theme.palette.background.paper}
+          color={theme.palette.text.primary}
         />
-      </Stack>
 
-      <Divider sx={{ my: 2 }}>OR</Divider>
+        <Divider sx={{ my: 1 }}>OR</Divider>
 
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <Typography variant="body2" fontWeight={500}>
+          EMAIL
+        </Typography>
         <TextField
-          label="Email"
-          type="email"
           fullWidth
-          margin="normal"
+          placeholder="Email"
           {...register("email")}
           error={!!errors.email}
           helperText={errors.email?.message}
         />
 
+        <Typography variant="body2" fontWeight={500}>
+          PASSWORD
+        </Typography>
         <TextField
-          label="Password"
-          type="password"
           fullWidth
-          margin="normal"
+          placeholder="Password"
+          type="password"
           {...register("password")}
           error={!!errors.password}
           helperText={errors.password?.message}
         />
 
+        <Typography variant="body2" fontWeight={500}>
+          CONFIRM PASSWORD
+        </Typography>
         <TextField
-          label="Confirm Password"
-          type="password"
           fullWidth
-          margin="normal"
+          placeholder="Confirm Password"
+          type="password"
           {...register("confirmPassword")}
           error={!!errors.confirmPassword}
           helperText={errors.confirmPassword?.message}
@@ -80,23 +100,29 @@ const SignUpForm = () => {
 
         <Button
           type="submit"
+          fullWidth
           variant="contained"
           color="primary"
-          fullWidth
           disabled={isSubmitting}
           sx={{ mt: 2 }}
         >
-          {isSubmitting ? "Signing up..." : "Sign up"}
+          Sign Up
         </Button>
-      </form>
 
-      <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-        Already have an account?{" "}
-        <Link to="/login" style={{ color: "#E57373", textDecoration: "none" }}>
-          Login now
-        </Link>
-      </Typography>
-    </Box>
+        <Typography align="center" mt={2}>
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            style={{
+              color: theme.palette.primary.main,
+              textDecoration: "none",
+            }}
+          >
+            Login now
+          </Link>
+        </Typography>
+      </Stack>
+    </form>
   );
 };
 

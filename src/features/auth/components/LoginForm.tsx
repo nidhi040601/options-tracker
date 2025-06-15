@@ -1,9 +1,4 @@
 // src/features/auth/components/LoginForm.tsx
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../validation/loginSchema";
-import { z } from "zod";
 import {
   Box,
   Button,
@@ -12,57 +7,81 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../validation/loginSchema";
+import { z } from "zod";
+import SocialButton from "./SocialButton";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import SocialButton from "./SocialButton";
+import { Link } from "react-router-dom";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
+  const theme = useTheme();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const onSubmitHandler = (data: LoginFormData) => {
-    console.log("Login data:", data);
-    alert("Login attempt submitted!");
+  const onSubmit = (data: LoginFormData) => {
+    console.log(data);
   };
 
   return (
-    <Box>
-      <Stack spacing={2} sx={{ my: 2 }}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Typography variant="h1" align="center" gutterBottom>
+        Welcome Back!
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        align="center"
+        color="text.secondary"
+        gutterBottom
+      >
+        Login to your account
+      </Typography>
+
+      <Stack spacing={1.5} mt={2}>
         <SocialButton
-          icon={<FcGoogle size={24} />}
+          icon={<FcGoogle />}
           text="Continue with Google"
-          onClick={() => console.log("Google login")}
+          background={theme.palette.background.paper}
+          color={theme.palette.text.primary}
         />
         <SocialButton
-          icon={<FaApple size={24} />}
+          icon={<FaApple />}
           text="Continue with Apple"
-          onClick={() => console.log("Apple login")}
+          background={theme.palette.background.paper}
+          color={theme.palette.text.primary}
         />
-      </Stack>
 
-      <Divider sx={{ my: 2 }}>OR</Divider>
+        <Divider sx={{ my: 1 }}>OR</Divider>
 
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <Typography variant="body2" fontWeight={500}>
+          EMAIL
+        </Typography>
         <TextField
-          label="Email"
-          type="email"
           fullWidth
-          margin="normal"
+          placeholder="Email"
           {...register("email")}
           error={!!errors.email}
           helperText={errors.email?.message}
         />
 
+        <Typography variant="body2" fontWeight={500}>
+          PASSWORD
+        </Typography>
         <TextField
-          label="Password"
-          type="password"
           fullWidth
-          margin="normal"
+          placeholder="Password"
+          type="password"
           {...register("password")}
           error={!!errors.password}
           helperText={errors.password?.message}
@@ -70,23 +89,29 @@ const LoginForm = () => {
 
         <Button
           type="submit"
+          fullWidth
           variant="contained"
           color="primary"
-          fullWidth
           disabled={isSubmitting}
           sx={{ mt: 2 }}
         >
-          {isSubmitting ? "Logging in..." : "Log In"}
+          Log In
         </Button>
-      </form>
 
-      <Typography variant="body2" align="center" sx={{ mt: 2 }}>
-        Don’t have an account?{" "}
-        <Link to="/signup" style={{ color: "#E57373", textDecoration: "none" }}>
-          Sign up now
-        </Link>
-      </Typography>
-    </Box>
+        <Typography align="center" mt={2}>
+          Don’t have an account?{" "}
+          <Link
+            to="/signup"
+            style={{
+              color: theme.palette.primary.main,
+              textDecoration: "none",
+            }}
+          >
+            Signup now
+          </Link>
+        </Typography>
+      </Stack>
+    </form>
   );
 };
 

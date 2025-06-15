@@ -1,69 +1,72 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import type { ReactNode } from "react";
+import glowLogo from "../../../assets/logo.png";
+import headingImage from "../../../assets/knowitall.png";
 
-type AuthLayoutProps = {
+export type AuthLayoutProps = {
   children: ReactNode;
-  title: string;
-  subtitle: string;
 };
 
-const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
+const AuthLayout = ({ children }: AuthLayoutProps) => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
         display: "flex",
-        minHeight: "100vh",
+        height: "100vh",
         width: "100%",
+        overflow: "hidden",
       }}
     >
-      {/* Left side */}
+      {/* Left Panel */}
       <Box
         sx={{
           flex: 1,
-          backgroundColor: "primary.main",
-          color: "secondary.main",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          p: 4,
+          backgroundColor: theme.palette.primary.light,
+          position: "relative",
         }}
       >
-        <Typography
-          variant="h4"
+        <Box
+          component="img"
+          src={headingImage}
+          alt="Know It All Logo"
           sx={{
-            fontWeight: 700,
-            letterSpacing: "1px",
-            color: "white",
-            textAlign: "center",
+            position: "absolute",
+            top: "12%",
+            left: "23%",
+            width: "400px",
+            height: "auto",
+            zIndex: 2,
           }}
-        >
-          KNOWITALL <br />
-          OPTIONS <br />
-          TRACKER
-        </Typography>
+        />
+
+        <Box
+          component="img"
+          src={glowLogo}
+          alt="Chart Image"
+          sx={{
+            position: "absolute",
+            bottom: "23%",
+            left: "20%",
+            width: "580px",
+            height: "auto",
+            zIndex: 1,
+          }}
+        />
       </Box>
 
-      {/* Right side */}
+      {/* Right Panel */}
       <Box
         sx={{
           flex: 1,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          p: 4,
-          flexDirection: "column",
+          px: 4,
         }}
       >
-        <Box sx={{ width: "100%", maxWidth: 400, textAlign: "center" }}>
-          <Typography variant="h1" gutterBottom>
-            {title}
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            {subtitle}
-          </Typography>
-          {children}
-        </Box>
+        <Box sx={{ width: "100%", maxWidth: 400 }}>{children}</Box>
       </Box>
     </Box>
   );

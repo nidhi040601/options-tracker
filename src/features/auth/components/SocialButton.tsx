@@ -1,43 +1,50 @@
-
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Box, Typography, useTheme } from "@mui/material";
 import type { ReactNode } from "react";
+import socialButtonStyles from "../../../theme/socialButtonStyles";
 
-type SocialButtonProps = {
+interface SocialButtonProps {
   icon: ReactNode;
   text: string;
   onClick?: () => void;
-};
+  background?: string;
+  color?: string;
+}
 
-const SocialButton = ({ icon, text, onClick }: SocialButtonProps) => {
+const SocialButton = ({ icon, text, onClick, background, color }: SocialButtonProps) => {
+  const theme = useTheme();
+
   return (
     <Button
       onClick={onClick}
+      variant="outlined"
       fullWidth
       sx={{
-        backgroundColor: "#FAFAFA",
-        borderRadius: "8px",
-        padding: "12px",
-        textTransform: "none",
-        fontWeight: 500,
-        fontSize: "1rem",
-        border: "1px solid #E0E0E0",
-        boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center", // center everything
-        gap: 1,
-        color: "#000000", // ensure text is black
+        socialButtonStyles,
+        backgroundColor: background ?? theme.palette.background.paper,
+        color: color ?? theme.palette.text.primary,
+       // textTransform: "none",
+        borderRadius: theme.shape.borderRadius * 3,
+        paddingY: theme.spacing(1.5),
+        paddingX: theme.spacing(3),
+       // display: "flex",
+       // alignItems: "center",
+       // justifyContent: "center",
+        gap: theme.spacing(1.5),
+       // border: "none",
+       // boxShadow: "socialButtonStyles.boxShadow",
+        fontSize: theme.typography.body1.fontSize,
+        fontWeight: theme.typography.fontWeightRegular,
         "&:hover": {
-          backgroundColor: "#f0f0f0",
+          backgroundColor: theme.palette.grey[100],
         },
       }}
     >
-      <Stack direction="row" spacing={1} alignItems="center">
+      <Box component="span" sx={{ display: "flex", alignItems: "center" }}>
         {icon}
-        <Typography variant="body1" component="span" sx={{ color: "#000000" }}>
-          {text}
-        </Typography>
-      </Stack>
+      </Box>
+      <Typography variant="body1" fontWeight={theme.typography.fontWeightRegular}>
+        {text}
+      </Typography>
     </Button>
   );
 };
